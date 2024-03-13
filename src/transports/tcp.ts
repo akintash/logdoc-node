@@ -67,9 +67,7 @@ class TcpTransport {
       this.client.destroy();
     });
 
-    this.client.on('close', () => {
-      console.log('Connection closed');
-    });
+    this.client.on('close', () => {});
     return;
   }
 }
