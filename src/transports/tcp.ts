@@ -67,7 +67,7 @@ class TcpTransport {
       this.client.destroy();
     });
 
-    this.client.on('close', () => {});
+    // this.client.on('close', () => {});
     return;
   }
 }
