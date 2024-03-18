@@ -60,6 +60,7 @@ class TcpTransport {
     const readyMessage = this.#prepareTCPMessage(message);
     this.client.connect(this.config.port, this.config.host, () => {
       this.client.write(new Uint8Array(readyMessage));
+      this.client.setKeepAlive(true, 120000);
       this.client.destroy();
     });
 
@@ -67,8 +68,13 @@ class TcpTransport {
       this.client.destroy();
     });
 
+    this.client.on('error', (err) => {
+      console.error('Error LogDoc', err);
+      this.client.destroy();
+    });
+
     this.client.on('close', () => {
-      console.log('🤡');
+      this.client.destroy();
     });
     return;
   }
