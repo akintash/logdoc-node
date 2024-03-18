@@ -57,23 +57,20 @@ class TcpTransport {
   }
 
   send(message: Message) {
-    try {
-      const readyMessage = this.#prepareTCPMessage(message);
-      this.client.connect(this.config.port, this.config.host, () => {
-        this.client.write(new Uint8Array(readyMessage));
-        this.client.destroy();
-      });
+    const readyMessage = this.#prepareTCPMessage(message);
+    this.client.connect(this.config.port, this.config.host, () => {
+      this.client.write(new Uint8Array(readyMessage));
+      this.client.destroy();
+    });
 
-      this.client.on('data', () => {
-        this.client.destroy();
-      });
+    this.client.on('data', () => {
+      this.client.destroy();
+    });
 
-      // this.client.on('close', () => {});
-      return;
-    } catch (error: any) {
-      console.error(error);
-      return;
-    }
+    this.client.on('close', () => {
+      console.log('🤡');
+    });
+    return;
   }
 }
 export default TcpTransport;
